@@ -1,1 +1,3 @@
+nginx
+streamlit
 plotly
