@@ -122,3 +122,11 @@ def main():
 
 if __name__ == "__main__":
     main()
+# 샘플 데이터 생성
+sample_data = {
+    "Country": ["Korea", "Korea", "Korea", "Germany", "Germany", "Germany"],
+    "Year": [2010, 2015, 2020, 2010, 2015, 2020],
+    "Renewable_Energy_GWh": [12000, 18000, 25000, 50000, 90000, 120000]
+}
+df = pd.DataFrame(sample_data)
+df.to_csv("renewable_energy.csv", index=False)
