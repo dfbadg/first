@@ -1,28 +1,33 @@
 import pandas as pd
 import plotly.express as px
-import streamlit as st  # 꼭 필요함!
+import streamlit as st
 
-# 올바른 경로
+# CSV 불러오기
 df = pd.read_csv("data/renewable_energy.csv")
 
+# 그래프 생성
 fig = px.bar(df.sort_values('Renewable_Percentage', ascending=False),
              x='Country', y='Renewable_Percentage',
              title='국가별 재생에너지 발전 비율 (%)')
 
-# 핵심 출력 함수!
+# Streamlit에 그래프 출력
 st.plotly_chart(fig)
-import folium
-import streamlit as st
 
-m = folium.Map(location=[20, 0], zoom_start=2)
+# 설명 출력
+st.markdown("### 🌍 국가별 에너지 특징 분석")
 
+# 국가별 자동 분석 문장 생성
 for i, row in df.iterrows():
-    folium.CircleMarker(
-        location=[row["Latitude"], row["Longitude"]],
-        radius=row["Renewable_Percentage"] / 5,
-        popup=f"{row['Country']}: {row['Renewable_Percentage']}%",
-        color='green',
-        fill=True
-    ).add_to(m)
+    percent = row["Renewable_Percentage"]
+    country = row["Country"]
 
-st.components.v1.html(m._repr_html_(), height=500)
+    if percent >= 60:
+        summary = f"✅ **{country}**은/는 재생에너지 비율이 매우 높으며, 수력 등 친환경 에너지 중심입니다."
+    elif percent >= 30:
+        summary = f"🔶 **{country}**은/는 재생에너지 확대가 잘 진행 중입니다."
+    elif percent >= 15:
+        summary = f"⚠️ **{country}**은/는 전환 단계에 있으며, 더 많은 투자가 필요합니다."
+    else:
+        summary = f"❌ **{country}**은/는 재생에너지 비중이 낮아 개선이 시급합니다."
+
+    st.markdown(summary)
