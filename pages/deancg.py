@@ -20,7 +20,7 @@ if page == "홈":
         재생에너지는 환경 보호와 지속가능한 발전의 핵심 요소입니다.
         본 발표에서는 주요 국가들의 재생에너지 생산량 추이를 살펴봅니다.
     """)
-    st.image("https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80", use_column_width=True)
+    st.image("https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80", use_container_width=True)
 
 elif page == "국가별 생산량 추이":
     st.title("국가별 재생에너지 생산량 추이")
