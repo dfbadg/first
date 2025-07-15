@@ -1,29 +1,49 @@
 import streamlit as st
+import pandas as pd
 import plotly.express as px
 
-st.set_page_config(page_title="재생에너지 비율", layout="wide")
-st.title("국가별 재생에너지 비율 및 특징")
+# 페이지 설정
+st.set_page_config(page_title="국가별 재생에너지 분석", layout="wide")
+st.title("🌿 국가별 재생에너지 발전 비율 및 특징 분석")
 
-countries = ["대한민국", "독일", "미국", "중국", "노르웨이", "인도", "브라질", "일본"]
-ratios = [7.5, 46.2, 20.1, 29.0, 98.0, 22.3, 83.5, 19.8]
-features = [
-    "태양광 위주, 낮은 비율. 석탄 의존 여전.",
-    "풍력·태양광 중심, 원전 탈피 중.",
-    "풍력·수력 확대, 주별 차이 큼.",
-    "풍력·태양광 세계 최대, 석탄 병행.",
-    "거의 전량 수력발전, 비율 세계 최고.",
-    "농촌 태양광 확대, 에너지 접근 개선.",
-    "수력 위주, 전력의 80% 이상 재생에너지.",
-    "지열·태양광 개발 중, 아직 화석연료 의존.",
-]
+# 데이터 구성
+data = {
+    "국가": ["대한민국", "독일", "미국", "중국", "노르웨이", "인도", "브라질", "일본"],
+    "비율(%)": [7.5, 46.2, 20.1, 29.0, 98.0, 22.3, 83.5, 19.8],
+    "특징": [
+        "태양광 위주의 재생에너지 정책을 추진 중이나 여전히 석탄 발전 비중이 높아 전환 속도는 느린 편이다.",
+        "풍력과 태양광 중심의 에너지 전환 선도국으로, 원자력 발전 축소와 재생에너지 확대를 병행하고 있다.",
+        "주 정부별 정책 차이가 크며, 풍력과 수력을 중심으로 재생에너지 생산을 꾸준히 늘려가고 있다.",
+        "풍력과 태양광 설치 규모가 세계 최대지만, 석탄 의존도도 여전히 높아 이중 구조를 띤다.",
+        "전력의 90% 이상을 수력 발전으로 충당하며, 세계에서 가장 높은 재생에너지 비율을 기록 중이다.",
+        "농촌 지역을 중심으로 태양광 확산이 진행 중이며, 에너지 접근성 향상에 중점을 두고 있다.",
+        "풍부한 수자원을 활용한 수력 발전이 주를 이루며, 전체 전력의 80% 이상을 재생에너지로 공급한다.",
+        "지열·태양광 기술 개발에 집중하고 있으나, 아직까지는 화석연료 의존도가 높은 편이다.",
+    ],
+}
 
-fig = px.bar(x=countries, y=ratios, labels={"x": "국가", "y": "비율(%)"}, text=ratios,
-             title="국가별 재생에너지 비율")
+df = pd.DataFrame(data)
+
+# 막대그래프 시각화
+fig = px.bar(
+    df,
+    x="국가",
+    y="비율(%)",
+    text="비율(%)",
+    color="비율(%)",
+    color_continuous_scale="Viridis",
+    title="🌍 국가별 재생에너지 발전 비율",
+    labels={"비율(%)": "재생에너지 비율 (%)"},
+)
+
 fig.update_traces(texttemplate="%{text}%", textposition="outside")
-fig.update_layout(yaxis_range=[0, 100])
+fig.update_layout(yaxis_range=[0, 100], coloraxis_showscale=False)
 
 st.plotly_chart(fig, use_container_width=True)
 
-st.subheader("국가별 재생에너지 특징")
-for i in range(len(countries)):
-    st.markdown(f"**{countries[i]}**: {features[i]}")
+# 국가별 특징 출력
+st.subheader("🔍 상세 설명: 국가별 재생에너지 특징")
+
+for i, row in df.iterrows():
+    st.markdown(f"### {row['국가']}")
+    st.markdown(f"📌 **{row['특징']}**\n")
