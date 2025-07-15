@@ -1,33 +1,29 @@
-import pandas as pd
-import plotly.express as px
 import streamlit as st
+import plotly.express as px
 
-# CSV 불러오기
-df = pd.read_csv("data/renewable_energy.csv")
+st.set_page_config(page_title="재생에너지 비율", layout="wide")
+st.title("국가별 재생에너지 비율 및 특징")
 
-# 그래프 생성
-fig = px.bar(df.sort_values('Renewable_Percentage', ascending=False),
-             x='Country', y='Renewable_Percentage',
-             title='국가별 재생에너지 발전 비율 (%)')
+countries = ["대한민국", "독일", "미국", "중국", "노르웨이", "인도", "브라질", "일본"]
+ratios = [7.5, 46.2, 20.1, 29.0, 98.0, 22.3, 83.5, 19.8]
+features = [
+    "태양광 위주, 낮은 비율. 석탄 의존 여전.",
+    "풍력·태양광 중심, 원전 탈피 중.",
+    "풍력·수력 확대, 주별 차이 큼.",
+    "풍력·태양광 세계 최대, 석탄 병행.",
+    "거의 전량 수력발전, 비율 세계 최고.",
+    "농촌 태양광 확대, 에너지 접근 개선.",
+    "수력 위주, 전력의 80% 이상 재생에너지.",
+    "지열·태양광 개발 중, 아직 화석연료 의존.",
+]
 
-# Streamlit에 그래프 출력
-st.plotly_chart(fig)
+fig = px.bar(x=countries, y=ratios, labels={"x": "국가", "y": "비율(%)"}, text=ratios,
+             title="국가별 재생에너지 비율")
+fig.update_traces(texttemplate="%{text}%", textposition="outside")
+fig.update_layout(yaxis_range=[0, 100])
 
-# 설명 출력
-st.markdown("### 🌍 국가별 에너지 특징 분석")
+st.plotly_chart(fig, use_container_width=True)
 
-# 국가별 자동 분석 문장 생성
-for i, row in df.iterrows():
-    percent = row["Renewable_Percentage"]
-    country = row["Country"]
-
-    if percent >= 60:
-        summary = f"✅ **{country}**은/는 재생에너지 비율이 매우 높으며, 수력 등 친환경 에너지 중심입니다."
-    elif percent >= 30:
-        summary = f"🔶 **{country}**은/는 재생에너지 확대가 잘 진행 중입니다."
-    elif percent >= 15:
-        summary = f"⚠️ **{country}**은/는 전환 단계에 있으며, 더 많은 투자가 필요합니다."
-    else:
-        summary = f"❌ **{country}**은/는 재생에너지 비중이 낮아 개선이 시급합니다."
-
-    st.markdown(summary)
+st.subheader("국가별 재생에너지 특징")
+for i in range(len(countries)):
+    st.markdown(f"**{countries[i]}**: {features[i]}")
