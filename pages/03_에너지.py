@@ -139,3 +139,23 @@ elif page == "5. 결론":
 
     🔔 **이제, 질문 있으신가요?**
     """)
+    import pandas as pd
+import plotly.express as px
+
+# CSV 파일 불러오기
+df = pd.read_csv("renewable_energy.csv")
+
+# 선 그래프 생성
+fig = px.line(
+    df,
+    x="Year",
+    y="Renewable_Energy_GWh",
+    color="Country",
+    markers=True,
+    title="국가별 재생에너지 생산량 추이",
+    labels={"Renewable_Energy_GWh": "재생에너지 생산량 (GWh)"}
+)
+
+# 그래프 출력
+fig.show()
+
