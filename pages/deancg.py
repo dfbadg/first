@@ -103,30 +103,3 @@ def main():
         lon='longitude',
         color='democracy_type',
         size='democracy_index',
-        hover_name='country',
-        title=f"{reference_country} 주변 국가"
-    )
-
-    # 기준 국가 강조
-    fig2.add_trace(
-        go.Scattergeo(
-            lon=[ref_row['longitude']],
-            lat=[ref_row['latitude']],
-            marker=dict(size=20, color='red', symbol='star'),
-            name=f"{reference_country} (기준)"
-        )
-    )
-
-    fig2.update_layout(height=600)
-    st.plotly_chart(fig2, use_container_width=True)
-
-if __name__ == "__main__":
-    main()
-# 샘플 데이터 생성
-sample_data = {
-    "Country": ["Korea", "Korea", "Korea", "Germany", "Germany", "Germany"],
-    "Year": [2010, 2015, 2020, 2010, 2015, 2020],
-    "Renewable_Energy_GWh": [12000, 18000, 25000, 50000, 90000, 120000]
-}
-df = pd.DataFrame(sample_data)
-df.to_csv("renewable_energy.csv", index=False)
