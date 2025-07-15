@@ -1,3 +1,5 @@
-plotly
-folium
 pandas
+numpy
+matplotlib
+seaborn
+requests
